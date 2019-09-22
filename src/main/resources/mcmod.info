@@ -1,0 +1,8 @@
+[{
+    "modid": "playerstats",
+    "name": "Player Stats",
+    "description": "Synchronize player statistics",
+    "version": "1.0.0-SNAPSHOT",
+    "mcversion": "1.12.2",
+    "authorList": ["Lasm_Gratel"]
+}]
