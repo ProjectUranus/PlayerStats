@@ -12,13 +12,11 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'com.github.jengelman.gradle.plugins:shadow:4.+'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.50"
     }
 }
 
 apply plugin: 'kotlin'
-apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'net.minecraftforge.gradle.forge'
 
 sourceCompatibility = targetCompatibility = "1.8" // Need this here so eclipse task generates correctly.
@@ -48,6 +46,9 @@ repositories {
         name = "Progwml6 maven"
         url = "https://dvs1.progwml6.com/files/maven/"
     }
+    maven {
+        url "http://files.minecraftforge.net/maven"
+    }
 }
 
 minecraft {
@@ -60,11 +61,19 @@ minecraft {
     useDepAts = true
 }
 
+reobf {
+    jar {
+        extraLines "PK: org/bson com/projecturanus/shaded/org/bson"
+        extraLines "PK: com/mongodb com/projecturanus/shaded/com/mongodb"
+    }
+}
+
 dependencies {
 	compile "net.shadowfacts:Forgelin:1.8.4"
 	shadow "org.mongodb:mongo-java-driver:3.11.0"
     deobfCompile 'com.feed_the_beast.mods:FTBLib:5.+'
     deobfCompile 'com.feed_the_beast.mods:FTBUtilities:5.+'
+    compile "appeng:appliedenergistics2:rv6-stable-7:api"
 
     testCompile "junit:junit:4.12"
 }
@@ -89,8 +98,11 @@ processResources
     }
 }
 
-shadowJar {
-  configurations = [project.configurations.shadow]
+jar {
+    configurations.shadow.each { dep ->
+        from(project.zipTree(dep)){
+            exclude 'META-INF', 'META-INF/**'
+            // you may exclude other things here if you want, or maybe copy the META-INF
+        }
+    }
 }
-
-assemble.finalizedBy shadowJar

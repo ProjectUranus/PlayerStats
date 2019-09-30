@@ -11,6 +11,9 @@ public class PSConfig {
     @Config.Comment("Database name")
     public static String databaseName = "stat";
 
-    @Config.Comment("Collection name")
+    @Config.Comment("Player collection name")
     public static String collectionName = "pstats";
+
+    @Config.Comment("Inventory collection name")
+    public static String inventoryCollectionName = "istats";
 }

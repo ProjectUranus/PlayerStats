@@ -21,7 +21,7 @@ val database: MongoDatabase
     get() = mongoClient.getDatabase(PSConfig.databaseName)
 
 @Mod(modid = MODID, serverSideOnly = true, acceptableRemoteVersions = "*", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter",
-    dependencies = "after: ftbutilities, ftblib")
+    dependencies = "after: ftbutilities, ftblib, appliedenergistics2")
 object PlayerStats {
     @Mod.EventHandler
     fun construct(event: FMLConstructionEvent) {
@@ -39,5 +39,7 @@ object PlayerStats {
     @Mod.EventHandler
     fun serverStarting(event: FMLServerStartingEvent) {
         event.registerServerCommand(SyncStatCommand)
+        event.registerServerCommand(ReadContainerCommand)
+
     }
 }
